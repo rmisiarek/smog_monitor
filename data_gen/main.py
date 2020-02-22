@@ -1,26 +1,36 @@
 import time
-import board
-import adafruit_dht
+
+import requests
+from requests.exceptions import ConnectionError
+import Adafruit_DHT
+
 from sds011 import sds011
 
 
-sensor_dht22 = adafruit_dht.DHT22(board.D4)
+FLASK_URL = "http://192.168.0.129:5000"
+SDS011_ENDPOINT = FLASK_URL + "/api/dt/{pm10}/{pm25}/{temperature}/{humidity}/{time}"
+HDT22_ENDPOINT = FLASK_URL + "/api/t/{temperature}/{humidity}"
+
+sensor_dht22_pin = 4
+sensor_dht22 = Adafruit_DHT.DHT22
 sensor_sds011 = sds011.SDS011("/dev/ttyUSB0")
 sensor_sds011.set_duty_cycle(1)
 
 
 def get_temperature_and_humidity():
+    humidity, temperature = Adafruit_DHT.read(sensor_dht22, sensor_dht22_pin)
+
+    return {
+        "temperature": round(temperature, 1) if temperature else 0,
+        "humidity": round(humidity, 1) if humidity else 0
+    }
+
+
+def send_request(r):
     try:
-        temperature_c = sensor_dht22.temperature
-        humidity = sensor_dht22.humidity
-    except RuntimeError:
-        temperature_c = 0.0
-        humidity = 0.0
-    else:
-        return {
-            "temperature_c": temperature_c,
-            "humidity": humidity
-        }
+        requests.get(r)
+    except ConnectionError:
+        pass
 
 
 while True:
@@ -33,15 +43,25 @@ while True:
             if sds011_data and hdt22_data:
                 sds011_data.update(
                     {
-                        "temperature_c": hdt22_data["temperature_c"],
+                        "temperature_c": hdt22_data["temperature"],
                         "humidity": hdt22_data["humidity"]
                     }
                 )
 
-            print(sds011_data)
+            r = SDS011_ENDPOINT.format(
+                pm10=sds011_data["pm10"],
+                pm25=sds011_data["pm25"],
+                time=sds011_data["time"],
+                temperature=hdt22_data["temperature"],
+                humidity=hdt22_data["humidity"]
+            )
+            send_request(r)
 
         th_data = get_temperature_and_humidity()
-        print(th_data)
+        r = HDT22_ENDPOINT.format(
+            temperature=th_data["temperature"], humidity=th_data["humidity"]
+        )
+        send_request(r)
 
         time.sleep(1)
 

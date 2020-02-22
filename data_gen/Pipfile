@@ -6,8 +6,8 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-adafruit-circuitpython-dht = "*"
 requests = "*"
+Adafruit-DHT = "*"
 
 [requires]
 python_version = "3.8"

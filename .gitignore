@@ -131,6 +131,6 @@ dmypy.json
 
 # Keep empty .venv's:
 data_gen/.venv/*
-date_gen/.venv/*
+flask_app/.venv/*
 !data_gen/.venv/.gitkeep 
-!data_gen/.venv/.gitkeep
+!flask_app/.venv/.gitkeep
