@@ -58,8 +58,9 @@ coverage.xml
 # Django stuff:
 *.log
 local_settings.py
-db.sqlite3
-db.sqlite3-journal
+*.sqlite
+*.sqlite3
+*.sqlite3-journal
 
 # Flask stuff:
 instance/
@@ -134,3 +135,6 @@ data_gen/.venv/*
 flask_app/.venv/*
 !data_gen/.venv/.gitkeep 
 !flask_app/.venv/.gitkeep
+
+# others:
+run.sh
