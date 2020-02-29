@@ -7,7 +7,7 @@ import Adafruit_DHT
 from sds011 import sds011
 
 
-FLASK_URL = "http://192.168.0.129:5000"
+FLASK_URL = "http://192.168.0.129:5555"
 SDS011_ENDPOINT = FLASK_URL + "/api/dt/{pm10}/{pm25}/{temperature}/{humidity}/{time}"
 HDT22_ENDPOINT = FLASK_URL + "/api/t/{temperature}/{humidity}"
 
