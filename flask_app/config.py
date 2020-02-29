@@ -1,16 +1,16 @@
 import os
 
 path = os.path.dirname(os.path.realpath(__file__) )
-database_path = os.path.join(path, 'smog_db.sqlite3')
 
-flask_app_name = 'smog_monitor'
+FLASK_APP = 'smog_monitor'
+DATABASE_URI = f'sqlite:////{os.path.join(path, "db.sqlite3")}'
 
 
 class Config:
-    FLASK_APP = flask_app_name
-    FLASK_ENV = os.environ.get('FLASK_ENV')
-    FLASK_DEBUG = os.environ.get('FLASK_DEBUG')
-    SECRET_KEY = os.environ.get('SECRET_KEY')
+    FLASK_APP = FLASK_APP
+    FLASK_ENV = True # os.environ.get('FLASK_ENV')
+    FLASK_DEBUG = True # os.environ.get('FLASK_DEBUG')
+    SECRET_KEY = 'sadgfjnkl9q2348hiur92inlsadfkjf' # os.environ.get('SECRET_KEY')
 
-    SQLALCHEMY_DATABASE_URI = f'sqlite:////{database_path}'
-    SQLALCHEMY_TRACK_MODIFICATIONS = os.environ.get('SQLALCHEMY_TRACK_MODIFICATIONS')
+    SQLALCHEMY_DATABASE_URI = DATABASE_URI
+    SQLALCHEMY_TRACK_MODIFICATIONS = False # os.environ.get('SQLALCHEMY_TRACK_MODIFICATIONS')
