@@ -1,3 +1,5 @@
+import datetime
+
 from . import db
 
 
@@ -9,7 +11,7 @@ class SmogMetric(db.Model):
     pm25 = db.Column(db.Float, nullable=False)
     temperature = db.Column(db.Float, nullable=False)
     humidity = db.Column(db.Float, nullable=False)
-    time = db.Column(db.String(64), nullable=False)
+    created = db.Column(db.DateTime, default=datetime.datetime.now)
 
     def __repr__(self):
-        return f"<SmogMetric id={self.id}, time={self.time}>"
+        return f"<SmogMetric id={self.id}, created={self.created}>"

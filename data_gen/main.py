@@ -8,7 +8,7 @@ from sds011 import sds011
 
 
 FLASK_URL = "http://192.168.0.129:5555"
-SDS011_ENDPOINT = FLASK_URL + "/api/dt/{pm10}/{pm25}/{temperature}/{humidity}/{time}"
+SDS011_ENDPOINT = FLASK_URL + "/api/{pm10}/{pm25}/{temperature}/{humidity}"
 HDT22_ENDPOINT = FLASK_URL + "/api/t/{temperature}/{humidity}"
 
 sensor_dht22_pin = 4
@@ -51,17 +51,16 @@ while True:
             r = SDS011_ENDPOINT.format(
                 pm10=sds011_data["pm10"],
                 pm25=sds011_data["pm25"],
-                time=sds011_data["time"],
                 temperature=hdt22_data["temperature"],
                 humidity=hdt22_data["humidity"]
             )
             send_request(r)
 
-        th_data = get_temperature_and_humidity()
-        r = HDT22_ENDPOINT.format(
-            temperature=th_data["temperature"], humidity=th_data["humidity"]
-        )
-        send_request(r)
+        # th_data = get_temperature_and_humidity()
+        # r = HDT22_ENDPOINT.format(
+        #     temperature=th_data["temperature"], humidity=th_data["humidity"]
+        # )
+        # send_request(r)
 
         time.sleep(1)
 
